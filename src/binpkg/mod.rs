@@ -3,7 +3,7 @@ use crate::binpkg::metadata::Metadata;
 
 pub mod create;
 pub mod read;
-mod metadata;
+pub mod metadata;
 
 pub struct BinPkg {
     pub header: Value,
