@@ -4,7 +4,7 @@ use serde_json::Value;
 use tar::Archive;
 use flate2::read::GzDecoder;
 
-fn extract_package(input_file: &str, output_dir: &str) -> std::io::Result<Value> {
+pub fn extract_package(input_file: &str, output_dir: &str) -> std::io::Result<Value> {
     let file = File::open(input_file)?;
     let mut reader = BufReader::new(file);
 
