@@ -8,6 +8,7 @@ use flate2::write::GzEncoder;
 
 use tar::{Archive, Builder};
 
+use crate::binpkg::err::BinPkgError;
 use crate::binpkg::metadata::Metadata;
 
 pub mod create;
@@ -48,9 +49,10 @@ impl BinPkg {
 
         let mut length_line = String::new();
         reader.read_line(&mut length_line)?;
-        let metadata_length: usize = length_line.trim().split('=').nth(1).ok_or_eyre(
-            "The specified package is not compatible with the binpkg format."
-        )?.parse()?;
+        let metadata_length: usize = match length_line.trim().split('=').nth(1) {
+            Some(res) => res.parse()?,
+            None => return Err(Report::from(BinPkgError::InvalidFormat))
+        };
 
         let mut metadata_json = vec![0; metadata_length];
         reader.read_exact(&mut metadata_json)?;
@@ -69,9 +71,10 @@ impl BinPkg {
 
         let mut length_line = String::new();
         reader.read_line(&mut length_line)?;
-        let metadata_length: usize = length_line.trim().split('=').nth(1).ok_or_eyre(
-            "The specified package is not compatible with the binpkg format."
-        )?.parse()?;
+        let metadata_length: usize = match length_line.trim().split('=').nth(1) {
+            Some(res) => res.parse()?,
+            None => return Err(Report::from(BinPkgError::InvalidFormat))
+        };
 
         let mut metadata_json = vec![0; metadata_length];
         reader.read_exact(&mut metadata_json)?;
@@ -94,10 +97,8 @@ impl BinPkg {
 
     pub fn self_extract(self, output_dir: impl ToString) -> eyre::Result<()> {
         let source = match self.source {
-            Some(path) => { path },
-            None => {
-                return Err(Report::msg("Couldn't find source path for binpkg"))
-            }
+            Some(path) => path,
+            None => return Err(Report::from(BinPkgError::SourcePathNotFound))
         };
 
         let file = File::open(source)?;
@@ -105,9 +106,10 @@ impl BinPkg {
 
         let mut length_line = String::new();
         reader.read_line(&mut length_line)?;
-        let metadata_length: usize = length_line.trim().split('=').nth(1).ok_or_eyre(
-            "The specified package is not compatible with the binpkg format."
-        )?.parse()?;
+        let metadata_length: usize = match length_line.trim().split('=').nth(1) {
+            Some(res) => { res.parse()? },
+            None => { return Err(Report::from(BinPkgError::InvalidFormat)) }
+        };
 
         let mut metadata_json = vec![0; metadata_length];
         reader.read_exact(&mut metadata_json)?;
