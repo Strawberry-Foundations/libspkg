@@ -14,4 +14,4 @@ eyre = { version = "0.6.12", optional = true }
 
 [features]
 plugin = []
-binpkg = ["dep:tar", "dep:flate2", "dep:serde", "dep:serde_json"]
+binpkg = ["dep:tar", "dep:flate2", "dep:serde", "dep:serde_json", "dep:eyre"]
