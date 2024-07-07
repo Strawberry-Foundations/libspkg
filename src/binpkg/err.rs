@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::fmt::{Display, Formatter};
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub enum BinPkgError {
     InvalidFormat,
     SourcePathNotFound
