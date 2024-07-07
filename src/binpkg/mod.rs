@@ -13,6 +13,7 @@ use crate::binpkg::metadata::Metadata;
 pub mod create;
 pub mod read;
 pub mod metadata;
+pub mod err;
 
 pub struct BinPkg {
     pub metadata: Metadata,
