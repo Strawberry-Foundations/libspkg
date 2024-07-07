@@ -10,6 +10,8 @@ flate2 = { version = "1.0.30", optional = true  }
 serde = { version = "1.0.203", optional = true , features = ["derive"] }
 serde_json = { version = "1.0.120", optional = true  }
 
+eyre = { version = "0.6.12", optional = true }
+
 [features]
 plugin = []
 binpkg = ["dep:tar", "dep:flate2", "dep:serde", "dep:serde_json"]
