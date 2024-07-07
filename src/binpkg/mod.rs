@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader, Read, Write};
 
-use eyre::Report;
+use eyre::{OptionExt, Report};
 use flate2::Compression;
 use flate2::read::GzDecoder;
 use flate2::write::GzEncoder;
@@ -47,7 +47,9 @@ impl BinPkg {
 
         let mut length_line = String::new();
         reader.read_line(&mut length_line)?;
-        let metadata_length: usize = length_line.trim().split('=').nth(1).unwrap().parse().unwrap();
+        let metadata_length: usize = length_line.trim().split('=').nth(1).ok_or_eyre(
+            "The specified package is not compatible with the binpkg format."
+        )?.parse()?;
 
         let mut metadata_json = vec![0; metadata_length];
         reader.read_exact(&mut metadata_json)?;
@@ -66,7 +68,9 @@ impl BinPkg {
 
         let mut length_line = String::new();
         reader.read_line(&mut length_line)?;
-        let metadata_length: usize = length_line.trim().split('=').nth(1).unwrap().parse().unwrap();
+        let metadata_length: usize = length_line.trim().split('=').nth(1).ok_or_eyre(
+            "The specified package is not compatible with the binpkg format."
+        )?.parse()?;
 
         let mut metadata_json = vec![0; metadata_length];
         reader.read_exact(&mut metadata_json)?;
@@ -100,7 +104,9 @@ impl BinPkg {
 
         let mut length_line = String::new();
         reader.read_line(&mut length_line)?;
-        let metadata_length: usize = length_line.trim().split('=').nth(1).unwrap().parse().unwrap();
+        let metadata_length: usize = length_line.trim().split('=').nth(1).ok_or_eyre(
+            "The specified package is not compatible with the binpkg format."
+        )?.parse()?;
 
         let mut metadata_json = vec![0; metadata_length];
         reader.read_exact(&mut metadata_json)?;
