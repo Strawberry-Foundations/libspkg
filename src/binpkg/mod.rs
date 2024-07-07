@@ -1,8 +1,10 @@
 use std::fs::File;
-use std::io::Write;
+use std::io::{BufRead, BufReader, Read, Write};
 use flate2::Compression;
+use flate2::read::GzDecoder;
 use flate2::write::GzEncoder;
-use tar::Builder;
+use serde_json::Value;
+use tar::{Archive, Builder};
 
 use crate::binpkg::metadata::Metadata;
 
@@ -34,6 +36,25 @@ impl BinPkg {
             metadata,
             source: Some(source_directory.to_string()),
             output: Some(output_file.to_string())
+        })
+    }
+    
+    pub fn read(input_file: impl ToString) -> eyre::Result<Self> {
+        let file = File::open(input_file.to_string())?;
+        let mut reader = BufReader::new(file);
+
+        let mut length_line = String::new();
+        reader.read_line(&mut length_line)?;
+        let metadata_length: usize = length_line.trim().split('=').nth(1).unwrap().parse().unwrap();
+
+        let mut metadata_json = vec![0; metadata_length];
+        reader.read_exact(&mut metadata_json)?;
+        let metadata: Metadata = serde_json::from_slice(&metadata_json)?;
+
+        Ok(Self {
+            metadata,
+            source: Some(input_file.to_string()),
+            output: None
         })
     }
 }
