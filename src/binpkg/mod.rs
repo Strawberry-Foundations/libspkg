@@ -1,11 +1,10 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader, Read, Write};
 
-use eyre::{OptionExt, Report};
+use eyre::Report;
 use flate2::Compression;
 use flate2::read::GzDecoder;
 use flate2::write::GzEncoder;
-
 use tar::{Archive, Builder};
 
 use crate::binpkg::err::BinPkgError;
