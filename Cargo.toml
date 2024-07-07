@@ -7,7 +7,7 @@ edition = "2021"
 tar = { version = "0.4.41", optional = true }
 flate2 = { version = "1.0.30", optional = true  }
 
-serde = { version = "1.0.204", optional = true , features = ["derive"] }
+serde = { version = "1.0.203", optional = true , features = ["derive"] }
 serde_json = { version = "1.0.120", optional = true  }
 
 eyre = { version = "0.6.12", optional = true }
