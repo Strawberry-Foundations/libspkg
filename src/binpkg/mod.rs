@@ -75,15 +75,18 @@ impl BinPkg {
 
         let mut length_line = String::new();
         reader.read_line(&mut length_line)?;
-        let metadata_length: usize = match length_line.trim().split('=').nth(1) {
-            Some(res) => res.parse()?,
-            None => return Err(Report::from(BinPkgError::InvalidFormat))
-        };
+        let parts: Vec<&str> = length_line.trim().split(',').collect();
+
+        if parts.len() != 2 {
+            return Err(Report::from(BinPkgError::InvalidFormat));
+        }
+
+        let metadata_length: usize = parts[0].split('=').nth(1).ok_or(BinPkgError::InvalidFormat)?.parse()?;
+        let _version = parts[1].split('=').nth(1).ok_or(BinPkgError::InvalidFormat)?;
 
         let mut metadata_json = vec![0; metadata_length];
         reader.read_exact(&mut metadata_json)?;
         let metadata: Metadata = serde_json::from_slice(&metadata_json)?;
-
 
         let mut separator = [0; 1];
         reader.read_exact(&mut separator)?;
@@ -110,10 +113,14 @@ impl BinPkg {
 
         let mut length_line = String::new();
         reader.read_line(&mut length_line)?;
-        let metadata_length: usize = match length_line.trim().split('=').nth(1) {
-            Some(res) => { res.parse()? },
-            None => { return Err(Report::from(BinPkgError::InvalidFormat)) }
-        };
+        let parts: Vec<&str> = length_line.trim().split(',').collect();
+
+        if parts.len() != 2 {
+            return Err(Report::from(BinPkgError::InvalidFormat));
+        }
+
+        let metadata_length: usize = parts[0].split('=').nth(1).ok_or(BinPkgError::InvalidFormat)?.parse()?;
+        let _version = parts[1].split('=').nth(1).ok_or(BinPkgError::InvalidFormat)?;
 
         let mut metadata_json = vec![0; metadata_length];
         reader.read_exact(&mut metadata_json)?;
