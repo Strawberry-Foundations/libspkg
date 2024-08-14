@@ -5,10 +5,10 @@ edition = "2021"
 
 [dependencies]
 tar = { version = "0.4.41", optional = true }
-flate2 = { version = "1.0.30", optional = true  }
+flate2 = { version = "1.0.31", optional = true  }
 
-serde = { version = "1.0.203", optional = true , features = ["derive"] }
-serde_json = { version = "1.0.120", optional = true  }
+serde = { version = "1.0.207", optional = true , features = ["derive"] }
+serde_json = { version = "1.0.124", optional = true  }
 
 eyre = { version = "0.6.12", optional = true }
 
