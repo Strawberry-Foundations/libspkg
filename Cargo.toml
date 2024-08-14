@@ -7,6 +7,7 @@ description = "Spkg Rust Library"
 homepage = "https://strawberryfoundations.org"
 repository = "https://github.com/Strawberry-Foundations/libspkg"
 readme = "README.md"
+authors = ["Juliandev02 <julian@strawberryfoundations.org>", "matteodev8"]
 
 [dependencies]
 tar = { version = "0.4.41", optional = true }
