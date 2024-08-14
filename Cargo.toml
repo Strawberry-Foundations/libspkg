@@ -2,6 +2,11 @@
 name = "libspkg"
 version = "0.1.5"
 edition = "2021"
+license = "GPL-3.0"
+description = "Spkg Rust Library"
+homepage = "https://strawberryfoundations.org"
+repository = "https://github.com/Strawberry-Foundations/libspkg"
+readme = "README.md"
 
 [dependencies]
 tar = { version = "0.4.41", optional = true }
