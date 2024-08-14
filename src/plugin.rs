@@ -7,39 +7,36 @@
 /// pub struct ExamplePlugin;
 ///
 /// impl Plugin for ExamplePlugin {
-///     fn properties(&self) -> PluginProperties {
-///         PluginProperties {
-///             name: "Example Plugin",
-///             id: "example-plugin",
-///             package_id: "com.example.exampleplugin",
-///             version: "0.1.0",
-///         }
-///     }
-///
 ///     fn execute(&self, args: &[String]) {
 ///         match args.first().unwrap().as_str() {
 ///             "test" => {
-///                 println!("Test function")
+///                 println!("Example spkg plugin")
 ///             },
 ///             _ => self.help()
 ///         }
-///         println!("Example spkg plugin")
 ///     }
 ///
 ///     fn help(&self) {
 ///         println!("Example help message")
 ///     }
 /// }
-/// 
+///
 /// #[allow(improper_ctypes_definitions)]
 /// #[no_mangle]
-/// pub extern "C" fn create_plugin() -> Box<dyn Plugin> {
-///     Box::new(ExamplePlugin)
+/// pub extern "C" fn create_plugin() -> (Box<dyn Plugin>, PluginProperties) {
+///     let properties: PluginProperties = PluginProperties {
+///         name: "Example Plugin",
+///         id: "example-plugin",
+///         package_id: "com.example.exampleplugin",
+///         version: env!("CARGO_PKG_VERSION"),
+///         library_version: libspkg::VERSION,
+///     };
+///
+///     (Box::new(ExamplePlugin), properties)
 /// }
 /// ```
 
 pub trait Plugin {
-    fn properties(&self) -> PluginProperties;
     fn execute(&self, args: &[String]);
     fn help(&self);
 }
@@ -51,4 +48,5 @@ pub struct PluginProperties {
     pub id: &'static str,
     pub package_id: &'static str,
     pub version: &'static str,
+    pub library_version: &'static str,
 }
