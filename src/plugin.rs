@@ -43,6 +43,7 @@ pub trait Plugin {
 
 /// # Struct PluginProperties
 /// This struct holds various information about the plugin, i.e. name, version, ...
+#[derive(Copy, Debug, Clone)]
 pub struct PluginProperties {
     pub name: &'static str,
     pub id: &'static str,
