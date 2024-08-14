@@ -30,7 +30,14 @@
 ///         println!("Example help message")
 ///     }
 /// }
+/// 
+/// #[allow(improper_ctypes_definitions)]
+/// #[no_mangle]
+/// pub extern "C" fn create_plugin() -> Box<dyn Plugin> {
+///     Box::new(ExamplePlugin)
+/// }
 /// ```
+
 pub trait Plugin {
     fn properties(&self) -> PluginProperties;
     fn execute(&self, args: &[String]);
